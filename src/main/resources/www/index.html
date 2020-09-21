@@ -45,7 +45,7 @@
             text-align: right;
             margin-right: 5%;
         }
-        #login{
+        .dialog{
             position: absolute;
             top: 50%; right: 50%;
             transform: translate(50%,-50%);
@@ -70,7 +70,7 @@
             color: gray(60);
             background: rgba(169, 169, 169, 0.5);
         }
-        #playBtn{
+        .btn{
             margin-left: 35%;
             margin-right: 35%;
             width:30%;
@@ -83,17 +83,59 @@
             font-variant: small-caps;
             margin-bottom: 1em;
         }
-
+        #imgOverview{
+            float: right;
+            width: 3em;
+            height: 3em;
+        }
+        #overview{
+            font-family: sans-serif;
+            font-variant: small-caps;
+            color:white;
+            width: 30%;
+        }
+        #overview h1{
+            font-size: 3vmin;
+        }
+        #overview table td{
+            border-bottom: 1px solid white;
+        }
+        #overview table tr{
+            padding-top: 2em;
+        }
+        #overview table{
+            width: 80%;
+            margin-left: 10%;
+            border-collapse: collapse;
+        }
+        #overview .leftColumn{
+            width: 30%;
+        }
+        #overview .rightColumn{
+            text-align: right;
+        }
+        #overview #headLeftColumn{
+        }
     </style>
 </head>
 <body>
     <div class="flex-container">
-        <div id="login" style="visibility: visible">
+        <div id="login" class="dialog" style="visibility: hidden">
             <img src="img/hand-rock.png" alt="rock" id="firstImg" class="imgLogin"/>
             <img src="img/hand-scissors.png" alt="scissors" class="imgLogin"/>
             <img src="img/hand-paper.png" alt="paper" class="imgLogin"/>
             <input type="text" id="name" name="name" value="Enter your Username"><br>
-            <button onclick="" id="playBtn">Play</button>
+            <button onclick="" id="playBtn" class="btn">Play</button>
+        </div>
+        <div id="overview" class="dialog" style="visibility: visible">
+            <table>
+                <tr><th id="headLeftColumn"><img src="img/hand-paper.png" alt="paper" id="imgOverview"/></th>
+                    <th id="headRightColumn"><h1>Hello "Username"</h1></th></tr>
+                <tr><td class="leftColumn">Wins:</td><td class="rightColumn">2</td></tr>
+                <tr><td class="leftColumn">Defeats:</td><td class="rightColumn"></td></tr>
+                <tr><td class="leftColumn">Skill Rating:</td><td class="rightColumn"></td></tr>
+            </table>
+            <button onclick="" id="playBtnOverview" class="btn">Play</button>
         </div>
         <div id="left">
             <div class="header">
