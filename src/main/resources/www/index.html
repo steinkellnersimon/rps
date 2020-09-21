@@ -23,7 +23,6 @@
             background-color: #d12324;
         }
         .header{
-            height: 25%;
             background: rgba(0, 0, 0, 0.43);
         }
         .headerName{
@@ -51,18 +50,20 @@
             top: 50%; right: 50%;
             transform: translate(50%,-50%);
             width: 40%;
-            height: 50%;
             background: rgba(0, 0, 0, 0.6);
         }
         .imgLogin{
             float:left;
             width: 20%;
         }
+        #firstImg{
+            margin-left: 20%
+        }
         #login input{
             margin-left: 10%;
             margin-right: 10%;
             width: 80%;
-            height: 15%;
+            height: 4em;
             margin-bottom: 10%;
             font-family: sans-serif;
             font-variant: small-caps;
@@ -73,13 +74,14 @@
             margin-left: 35%;
             margin-right: 35%;
             width:30%;
-            height: 15%;
+            height: 4em;
             border-color:#FFCE48;
             background-color: #FFCE48;
             border-top-right-radius: 50%;
             border-bottom-right-radius: 50%;
             font-family: sans-serif;
             font-variant: small-caps;
+            margin-bottom: 1em;
         }
 
     </style>
@@ -87,7 +89,7 @@
 <body>
     <div class="flex-container">
         <div id="login" style="visibility: visible">
-            <img src="img/hand-rock.png" alt="rock" class="imgLogin"/>
+            <img src="img/hand-rock.png" alt="rock" id="firstImg" class="imgLogin"/>
             <img src="img/hand-scissors.png" alt="scissors" class="imgLogin"/>
             <img src="img/hand-paper.png" alt="paper" class="imgLogin"/>
             <input type="text" id="name" name="name" value="Enter your Username"><br>
