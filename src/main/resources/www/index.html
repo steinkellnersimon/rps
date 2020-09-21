@@ -3,6 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <script src="jquery.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/js-cookie@rc/dist/js.cookie.min.js"></script>
+
+    <script src="script.js"></script>
     <style>
         *{
             margin: 0;
@@ -77,8 +81,6 @@
             height: 4em;
             border-color:#FFCE48;
             background-color: #FFCE48;
-            border-top-right-radius: 50%;
-            border-bottom-right-radius: 50%;
             font-family: sans-serif;
             font-variant: small-caps;
             margin-bottom: 1em;
@@ -120,12 +122,12 @@
 </head>
 <body>
     <div class="flex-container">
-        <div id="login" class="dialog" style="visibility: hidden">
+        <div id="login" class="dialog" style="display: none">
             <img src="img/hand-rock.png" alt="rock" id="firstImg" class="imgLogin"/>
             <img src="img/hand-scissors.png" alt="scissors" class="imgLogin"/>
             <img src="img/hand-paper.png" alt="paper" class="imgLogin"/>
             <input type="text" id="name" name="name" value="Enter your Username"><br>
-            <button onclick="" id="playBtn" class="btn">Play</button>
+            <button onclick="startGameInitial();" id="playBtn" class="btn">Play</button>
         </div>
         <div id="overview" class="dialog" style="visibility: visible">
             <table>
@@ -135,20 +137,20 @@
                 <tr><td class="leftColumn">Defeats:</td><td class="rightColumn"></td></tr>
                 <tr><td class="leftColumn">Skill Rating:</td><td class="rightColumn"></td></tr>
             </table>
-            <button onclick="" id="playBtnOverview" class="btn">Play</button>
+            <button onclick="startGame();" id="playBtnOverview" class="btn">Play</button>
         </div>
         <div id="left">
             <div class="header">
-               <h1 class="headerName">YourName</h1>
-                <h2>Rank: </h2>
-                <h1 class="strike">2</h1>
+               <h1 class="headerName" id="ownName">YourName</h1>
+                <h2 id="ownRank">Rank: </h2>
+                <h1 class="strike" id="ownScore">0</h1>
             </div>
         </div>
         <div id="right">
             <div class="header">
-                <h1 class="headerName">OpponentName</h1>
-                <h2>Rank: </h2>
-                <h1 class="strike">2</h1>
+                <h1 class="headerName" id="foreignName">OpponentName</h1>
+                <h2 id="foreignRank">Rank: </h2>
+                <h1 class="strike" id="foreignScore">0</h1>
             </div>
         </div>
     </div>
