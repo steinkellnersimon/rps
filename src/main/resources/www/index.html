@@ -14,7 +14,7 @@
         .flex-container{
             height: 100%;
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(600px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
         }
         #left{
             background-color: #44b3e0;
@@ -26,38 +26,85 @@
             height: 25%;
             background: rgba(0, 0, 0, 0.43);
         }
-        .header h1{
+        .headerName{
             font-family: sans-serif;
             font-variant: small-caps;
             font-size: 5vmin;
             color: white;
             text-align: center;
         }
+        .header h2{
+            font-family: sans-serif;
+            font-variant: small-caps;
+            font-size: 3vmin;
+            color: white;
+            text-align: center;
+        }
+        .strike{
+            font-family: sans-serif;
+            font-size: 5vmin;
+            text-align: right;
+            margin-right: 5%;
+        }
         #login{
             position: absolute;
             top: 50%; right: 50%;
             transform: translate(50%,-50%);
-            background: rgba(0, 0, 0, 0.43);
+            width: 40%;
+            height: 50%;
+            background: rgba(0, 0, 0, 0.6);
         }
+        .imgLogin{
+            float:left;
+            width: 20%;
+        }
+        #login input{
+            margin-left: 10%;
+            margin-right: 10%;
+            width: 80%;
+            height: 15%;
+            margin-bottom: 10%;
+            font-family: sans-serif;
+            font-variant: small-caps;
+            color: gray(60);
+            background: rgba(169, 169, 169, 0.5);
+        }
+        #playBtn{
+            margin-left: 35%;
+            margin-right: 35%;
+            width:30%;
+            height: 15%;
+            border-color:#FFCE48;
+            background-color: #FFCE48;
+            border-top-right-radius: 50%;
+            border-bottom-right-radius: 50%;
+            font-family: sans-serif;
+            font-variant: small-caps;
+        }
+
     </style>
 </head>
 <body>
     <div class="flex-container">
-        <div id="login">
-            hello hello hello
-            <form>
-                <input type="text" id="name" name="name" value="YourName"><br>
-                <input type="submit" value="Play"/>
-            </form>
+        <div id="login" style="visibility: visible">
+            <img src="img/hand-rock.png" alt="rock" class="imgLogin"/>
+            <img src="img/hand-scissors.png" alt="scissors" class="imgLogin"/>
+            <img src="img/hand-paper.png" alt="paper" class="imgLogin"/>
+            <input type="text" id="name" name="name" value="Enter your Username"><br>
+            <button onclick="" id="playBtn">Play</button>
         </div>
         <div id="left">
             <div class="header">
-               <h1>YourName</h1>
+               <h1 class="headerName">YourName</h1>
+                <h2>Rank: </h2>
+                <h1 class="strike">2</h1>
             </div>
         </div>
         <div id="right">
             <div class="header">
-                <h1>OpponentName</h1>
+                <h1 class="headerName">OpponentName</h1>
+                <h2>Rank: </h2>
+                <h1 class="strike">2</h1>
             </div>
         </div>
     </div>
