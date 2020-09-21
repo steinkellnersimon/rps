@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+        }
+        html,body{
+            height: 100%;
+        }
+        .flex-container{
+            height: 100%;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(600px, 1fr));
+        }
+        #left{
+            background-color: #44b3e0;
+        }
+        #right{
+            background-color: #d12324;
+        }
+        .header{
+            height: 25%;
+            background: rgba(0, 0, 0, 0.43);
+        }
+        .header h1{
+            font-family: sans-serif;
+            font-variant: small-caps;
+            font-size: 5vmin;
+            color: white;
+            text-align: center;
+        }
+        #login{
+            position: absolute;
+            top: 50%; right: 50%;
+            transform: translate(50%,-50%);
+            background: rgba(0, 0, 0, 0.43);
+        }
+    </style>
+</head>
+<body>
+    <div class="flex-container">
+        <div id="login">
+            hello hello hello
+            <form>
+                <input type="text" id="name" name="name" value="YourName"><br>
+                <input type="submit" value="Play"/>
+            </form>
+        </div>
+        <div id="left">
+            <div class="header">
+               <h1>YourName</h1>
+            </div>
+        </div>
+        <div id="right">
+            <div class="header">
+                <h1>OpponentName</h1>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
