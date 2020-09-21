@@ -1,0 +1,1 @@
+let webSocket = new WebSocket("http://rps.stnwtr.de/ws");
