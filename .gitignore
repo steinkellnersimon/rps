@@ -9,6 +9,3 @@ build
 
 # Ignore private .jar files
 libs
-
-# Ignore html root directory
-src/main/resources/www
