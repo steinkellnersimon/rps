@@ -131,6 +131,13 @@
             place-items: center;
             height: 70%;
         }
+        #mute{
+            position: fixed;
+            border-color:#FFCE48;
+            background-color: #FFCE48;
+            font-family: sans-serif;
+            font-variant: small-caps;
+        }
     </style>
 </head>
 <body>
@@ -154,6 +161,7 @@
         </div>
         <div id="left">
             <div class="header">
+                <button onclick="mute();" id="mute">Mute</button>
                <h1 class="headerName" id="ownName">YourName</h1>
                 <h2 id="ownRank">Rank: </h2>
                 <h1 class="strike" id="ownScore">0</h1>
