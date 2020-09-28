@@ -155,32 +155,36 @@
             </table>
             <button onclick="startGame();" id="playBtnOverview" class="btn">Play</button>
         </div>
-        <div id="left" class="grid-container">
+        <div id="left">
             <div class="header">
                <h1 class="headerName" id="ownName">YourName</h1>
                 <h2 id="ownRank">Rank: </h2>
                 <h1 class="strike" id="ownScore">0</h1>
             </div>
-            <div id="selectRPS">
-                <table>
-                    <tr><td></td><td>
-                        <img src="img/hand-rock.png" alt="rock" class="imgLogin" id="chooseRock"/>
-                    </td><td></td></tr>
-                    <tr><td>
-                        <img src="img/hand-scissors.png" alt="scissors" class="imgLogin" id="chooseScissors"/>
-                    </td><td></td><td>
-                        <img src="img/hand-paper.png" alt="paper" class="imgLogin" id="choosePaper"/>
-                    </td></tr>
-                </table>
+            <div class="grid-container">
+                <div id="selectRPS">
+                    <table>
+                        <tr><td></td><td>
+                            <img src="img/hand-rock.png" alt="rock" class="imgLogin" id="chooseRock"/>
+                        </td><td></td></tr>
+                        <tr><td>
+                            <img src="img/hand-scissors.png" alt="scissors" class="imgLogin" id="chooseScissors"/>
+                        </td><td></td><td>
+                            <img src="img/hand-paper.png" alt="paper" class="imgLogin" id="choosePaper"/>
+                        </td></tr>
+                    </table>
+                </div>
             </div>
         </div>
-        <div id="right" class="grid-container">
+        <div id="right">
             <div class="header">
                 <h1 class="headerName" id="foreignName">OpponentName</h1>
                 <h2 id="foreignRank">Rank: </h2>
                 <h1 class="strike" id="foreignScore">0</h1>
             </div>
+            <div class="grid-container">
                 <img src="img/questionMark.png" alt="paper" class="imgLogin" id="questionMark"/>
+            </div>
         </div>
     </div>
 </body>
