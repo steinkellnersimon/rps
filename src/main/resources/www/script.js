@@ -1,5 +1,5 @@
-//var webSocket = new WebSocket("ws://rps.stnwtr.de/ws");
-var webSocket = new WebSocket("ws://10.20.128.69:7435/ws");
+var webSocket = new WebSocket("ws://rps.stnwtr.de/ws");
+//var webSocket = new WebSocket("ws://10.20.128.69:7435/ws");
 var loggedIn = false;
 webSocket.onopen = login;
 webSocket.onerror = (e) => console.log(e);
@@ -26,11 +26,9 @@ function handleMessage(messageEvent) {
             $("#numberOfWins").text(parsedData.wins);
             $("#numberOfDefeats").text(parsedData.defeats);
             $("#skillRating").text(parsedData.score);
-            //TODO: Set Stats!
             break;
 
         case "start-game":
-            //TODO: set Stats
             $(".btn").html("Play");
             $("#login").fadeOut();
             $("#foreignRank").text("Rank: " + parsedData.enemyRank);
@@ -61,18 +59,17 @@ function handleMessage(messageEvent) {
             }, 1000);
             break;
         case "finish":
-            $("#resultBox").show();
-            if (parsedData.result === "finish")
-                $("#defeatMessage").show();
+            $("#resultBox").fadeIn();
+
+            if (parsedData.result === "win")
+                $("#winMessage").fadeIn();
             else
-                $('#winMessage').show();
+                $('#defeatMessage').fadeIn();
 
             setTimeout(() => {
                 location.reload();
-            }, 2000)
-            //TODO: process game result
+            }, 3000);
             break;
-
     }
 }
 

@@ -37,7 +37,7 @@
 
         .headerName {
             font-family: sans-serif;
-            font-variant: small-caps;
+            //font-variant: small-caps;
             font-size: 5vmin;
             color: white;
             text-align: center;
@@ -45,7 +45,7 @@
 
         .header h2 {
             font-family: sans-serif;
-            font-variant: small-caps;
+            //font-variant: small-caps;
             font-size: 3vmin;
             color: white;
             text-align: center;
@@ -83,20 +83,20 @@
             height: 4em;
             margin-bottom: 10%;
             font-family: sans-serif;
-            font-variant: small-caps;
+            //font-variant: small-caps;
             color: gray(60);
             background: rgba(169, 169, 169, 0.5);
         }
 
         .btn {
-            margin-left: 35%;
-            margin-right: 35%;
-            width: 30%;
+            margin-left: 25%;
+            margin-right: 25%;
+            width: 50%;
             height: 4em;
             border-color: #FFCE48;
             background-color: #FFCE48;
             font-family: sans-serif;
-            font-variant: small-caps;
+            //font-variant: small-caps;
             margin-bottom: 1em;
         }
 
@@ -108,14 +108,14 @@
 
         #overview {
             font-family: sans-serif;
-            font-variant: small-caps;
+            //font-variant: small-caps;
             color: white;
             width: 30%;
             min-width: 200px;
         }
 
         #overview h1 {
-            font-size: 3vmin;
+            font-size: 1.5em;
         }
 
         #overview table td {
@@ -162,7 +162,17 @@
             border-color: #FFCE48;
             background-color: #FFCE48;
             font-family: sans-serif;
-            font-variant: small-caps;
+            //font-variant: small-caps;
+        }
+
+        .centerTextH1 {
+            width: 100%;
+            height: 10%;
+            text-align: center;
+            position: relative;
+            top: 40%;
+            font-family: Arial;
+            display: none;
         }
     </style>
 </head>
@@ -172,9 +182,9 @@
 </div>
 
 <div id="resultBox"
-     style=" height: 100px; position: absolute; background: rgba(50,50,50,.8);transform: translate(-50%, -50%); top: 50%; left:50%; z-index: 4; display: none;">
-    <h1 id="defeatMessage" style="color:gold; font-family: Arial; display: none;">You just won! &#x1F642;</h1>
-    <h1 id="winMessage" style="color:red; font-family: Arial; display: none;">You just lost! &#x1F641;</h1>
+     style="position: absolute; background: rgba(50,50,50,.8); width: 100%; height: 100%; z-index: 4; display: none;">
+    <h1 id="winMessage" style="color:gold;" class="centerTextH1">You just won! &#x1F642;</h1>
+    <h1 id="defeatMessage" style="color:red;" class="centerTextH1">You just lost! &#x1F641;</h1>
 </div>
 
 <div class="flex-container">
@@ -182,7 +192,7 @@
         <img src="img/hand-rock.png" alt="rock" id="firstImg" class="imgLogin"/>
         <img src="img/hand-scissors.png" alt="scissors" class="imgLogin"/>
         <img src="img/hand-paper.png" alt="paper" class="imgLogin"/>
-        <input type="text" id="name" name="name" value="Enter your Username"><br>
+        <input type="text" id="name" name="name" placeholder="Enter your Username" style="color: white"><br>
         <button onclick="startGameInitial();" id="playBtn" class="btn">Play</button>
     </div>
     <div id="overview" class="dialog" style="visibility: visible">
