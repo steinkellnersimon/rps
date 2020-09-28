@@ -143,10 +143,10 @@
             <input type="text" id="name" name="name" value="Enter your Username"><br>
             <button onclick="startGameInitial();" id="playBtn" class="btn">Play</button>
         </div>
-        <div id="overview" class="dialog" style="visibility: hidden">
+        <div id="overview" class="dialog" style="visibility: visible">
             <table>
                 <tr><th id="headLeftColumn"><img src="img/hand-paper.png" alt="paper" id="imgOverview"/></th>
-                    <th id="headRightColumn"><h1>Hello "Username"</h1></th></tr>
+                    <th id="headRightColumn"><h1 id="helloUsername">Logging in...</h1></th></tr>
                 <tr><td class="leftColumn">Wins:</td><td class="rightColumn" id="numberOfWins"></td></tr>
                 <tr><td class="leftColumn">Defeats:</td><td class="rightColumn" id="numberOfDefeats"></td></tr>
                 <tr><td class="leftColumn">Skill Rating:</td><td class="rightColumn" id="skillRating"></td></tr>
@@ -160,15 +160,15 @@
                 <h1 class="strike" id="ownScore">0</h1>
             </div>
             <div class="grid-container">
-                <div id="selectRPS">
+                <div id="selectRPS" style="display: none;">
                     <table>
                         <tr><td></td><td>
-                            <img src="img/hand-rock.png" alt="rock" class="imgLogin" id="chooseRock"/>
+                            <img src="img/hand-rock.png" alt="rock" onclick="chooseMove('rock');" class="imgLogin" id="chooseRock"/>
                         </td><td></td></tr>
                         <tr><td>
-                            <img src="img/hand-scissors.png" alt="scissors" class="imgLogin" id="chooseScissors"/>
+                            <img src="img/hand-scissors.png" onclick="chooseMove('scissors');" alt="scissors" class="imgLogin" id="chooseScissors"/>
                         </td><td></td><td>
-                            <img src="img/hand-paper.png" alt="paper" class="imgLogin" id="choosePaper"/>
+                            <img src="img/hand-paper.png" onclick="chooseMove('paper');" alt="paper" class="imgLogin" id="choosePaper"/>
                         </td></tr>
                     </table>
                 </div>
@@ -181,7 +181,7 @@
                 <h1 class="strike" id="foreignScore">0</h1>
             </div>
             <div class="grid-container">
-                <img src="img/questionMark.png" alt="paper" class="imgLogin" id="questionMark"/>
+                <img style="display: none" src="img/questionMark.png" alt="paper" class="imgLogin" id="opponentMove"/>
             </div>
         </div>
     </div>
