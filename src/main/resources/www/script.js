@@ -111,3 +111,10 @@ function chooseMove(name){
 
     webSocket.send(JSON.stringify({"type":"selection", "value":name}));
 }
+var theme = new Audio("RRPS.mp3");
+    theme.muted = true;
+    theme.play();
+    theme.loop = true;
+    function mute() {
+        theme.muted = theme.muted !== true;
+    }
