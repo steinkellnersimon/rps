@@ -1,5 +1,5 @@
-var webSocket = new WebSocket("ws://rps.stnwtr.de/ws");
-//var webSocket = new WebSocket("ws://10.20.128.69:7435/ws");
+//var webSocket = new WebSocket("ws://rps.stnwtr.de/ws");
+var webSocket = new WebSocket("ws://10.20.128.69:7435/ws");
 var loggedIn = false;
 webSocket.onopen = login;
 webSocket.onerror = (e) => console.log(e);
@@ -16,13 +16,16 @@ function handleMessage(messageEvent) {
 
     switch (parsedData.type) {
         case "login":
-            Cookies.set('loginID', parsedData.cookie);
+            Cookies.set('loginID', parsedData.uuid);
             Cookies.set('username', parsedData.username);
+            $("#helloUsername").text("Hello "+parsedData.username);
             loggedIn = true;
             break;
         case "stats":
             latestStats = parsedData;
-
+            $("#numberOfWins").text(parsedData.wins);
+            $("#numberOfDefeats").text(parsedData.defeats);
+            $("#skillRating").text(parsedData.score);
             //TODO: Set Stats!
             break;
 
@@ -30,16 +33,20 @@ function handleMessage(messageEvent) {
             //TODO: set Stats
             $(".btn").html("Play");
             $("#login").fadeOut();
-            $("#foreignRank").val("Rank: "+parsedData.enemyRank);
-            $("#foreignName").val(parsedData.enemyName);
-            $("#ownRank").val("Rank: "+ parsedData.ownRank);
+            $("#foreignRank").text("Rank: "+parsedData.enemyRank);
+            $("#foreignName").text(parsedData.enemyName);
+            $("#ownRank").text("Rank: "+ parsedData.ownRank);
+            $("#ownName").text(Cookies.get("username"));
             $(".header").fadeIn();
-
+            $("#selectRPS").show();
+            $("#overview").hide();
+            $("#opponentMove").show();
 
             break;
         case "move-result":
             $("#ownScore").val(parsedData.ownPoints);
             $("#foreignScore").val(parsedData.enemyPoints);
+            $("#my_image").attr("src","second.jpg");
             break;
         case "finish":
             //TODO: process game result
@@ -55,16 +62,16 @@ function login() {
         $("#overview").show();
         console.log("Logging in with the Username:" + $("#name").val())
 
+        loggedIn=true;
         webSocket.send(JSON.stringify(
             {
                 "type": "login",
                 "username": $("#name").val(),
-                "cookie": Cookies.get('loginID')
+                "uuid": Cookies.get('loginID')
             }
         ));
-        setTimeout(() => {
-            webSocket.send(JSON.stringify({"type": "stats"}));
-        }, 500);
+        console.log("Requested stats");
+        webSocket.send(JSON.stringify({"type": "stats"}));
     }
 
     if ('loginID' in Cookies.get())
@@ -82,7 +89,7 @@ function startGame(){
             {
                 "type": "login",
                 "username": $("#name").val(),
-                "cookie": null
+                "uuid": null
             }
         ));
     }
@@ -99,6 +106,8 @@ function startGameInitial() {
 }
 
 function chooseMove(name){
-    console.log("Choosing "+name)
+    console.log("Choosing "+name);
+
+
     webSocket.send(JSON.stringify({"type":"selection", "value":name}));
 }
