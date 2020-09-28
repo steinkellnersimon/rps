@@ -6,7 +6,7 @@ webSocket.onerror = (e) => console.log(e);
 
 var latestStats = {};
 
-$( document ).ready(function() {
+$(document).ready(function () {
     $(".header").hide();
 });
 
@@ -18,7 +18,7 @@ function handleMessage(messageEvent) {
         case "login":
             Cookies.set('loginID', parsedData.uuid);
             Cookies.set('username', parsedData.username);
-            $("#helloUsername").text("Hello "+parsedData.username);
+            $("#helloUsername").text("Hello " + parsedData.username);
             loggedIn = true;
             break;
         case "stats":
@@ -33,9 +33,9 @@ function handleMessage(messageEvent) {
             //TODO: set Stats
             $(".btn").html("Play");
             $("#login").fadeOut();
-            $("#foreignRank").text("Rank: "+parsedData.enemyRank);
+            $("#foreignRank").text("Rank: " + parsedData.enemyRank);
             $("#foreignName").text(parsedData.enemyName);
-            $("#ownRank").text("Rank: "+ parsedData.ownRank);
+            $("#ownRank").text("Rank: " + parsedData.ownRank);
             $("#ownName").text(Cookies.get("username"));
             $(".header").fadeIn();
             $("#selectRPS").show();
@@ -44,13 +44,32 @@ function handleMessage(messageEvent) {
 
             break;
         case "move-result":
-            $("#ownScore").val(parsedData.ownPoints);
-            $("#foreignScore").val(parsedData.enemyPoints);
-            $("#my_image").attr("src","second.jpg");
+            $("#ownScore").text(parsedData.ownPoints);
+            $("#foreignScore").text(parsedData.enemyPoints);
+            $("#my_image").attr("src", "second.jpg");
 
-            $("#opponentMove").attr('src','img/hand-'+parsedData.enemyMove+'.png');
+            $("#opponentMove").attr('src', 'img/hand-' + parsedData.enemyMove + '.png');
+
+
+            setTimeout(() => {
+                $("#opponentMove").attr('src', 'img/questionMark.png');
+
+                $("#activeSelection").fadeOut(() => {
+                    $("#selectRPS").fadeIn();
+                });
+
+            }, 1000);
             break;
         case "finish":
+            $("#resultBox").show();
+            if (parsedData.result === "finish")
+                $("#defeatMessage").show();
+            else
+                $('#winMessage').show();
+
+            setTimeout(() => {
+                location.reload();
+            }, 2000)
             //TODO: process game result
             break;
 
@@ -62,9 +81,9 @@ webSocket.onmessage = handleMessage;
 function login() {
     function loginWithCookie() {
         $("#overview").show();
-        console.log("Logging in with the Username:" +  Cookies.get('username'))
+        console.log("Logging in with the Username:" + Cookies.get('username'))
 
-        loggedIn=true;
+        loggedIn = true;
         webSocket.send(JSON.stringify(
             {
                 "type": "login",
@@ -78,13 +97,13 @@ function login() {
 
     if ('loginID' in Cookies.get())
         loginWithCookie();
-    else{
+    else {
         $("#overview").hide();
         $("#login").show();
     }
 }
 
-function startGame(){
+function startGame() {
     $(".btn").html("Searching...");
     if (!loggedIn) {
         webSocket.send(JSON.stringify(
@@ -100,18 +119,18 @@ function startGame(){
 }
 
 function startGameInitial() {
-    if($("#name").val().length===0){
+    if ($("#name").val().length === 0) {
         alert("Please specify a name first!");
         return;
     }
     startGame();
 }
 
-function chooseMove(name){
-    console.log("Choosing "+name);
-    webSocket.send(JSON.stringify({"type":"selection", "value":name}));
+function chooseMove(name) {
+    console.log("Choosing " + name);
+    webSocket.send(JSON.stringify({"type": "selection", "value": name}));
     $("#selectRPS").fadeOut(() => {
-        $("#activeSelection").fadeIn().attr('src','img/hand-'+name+'.png');
+        $("#activeSelection").fadeIn().attr('src', 'img/hand-' + name + '.png');
     });
 
 }

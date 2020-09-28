@@ -170,6 +170,13 @@
 <div style="position:absolute; top:0; left:0;">
     <button onclick="mute();" id="mute">Mute</button>
 </div>
+
+<div id="resultBox"
+     style=" height: 100px; position: absolute; background: rgba(50,50,50,.8);transform: translate(-50%, -50%); top: 50%; left:50%; z-index: 4; display: none;">
+    <h1 id="defeatMessage" style="color:gold; font-family: Arial; display: none;">You just won! &#x1F642;</h1>
+    <h1 id="winMessage" style="color:red; font-family: Arial; display: none;">You just lost! &#x1F641;</h1>
+</div>
+
 <div class="flex-container">
     <div id="login" class="dialog" style="display: none">
         <img src="img/hand-rock.png" alt="rock" id="firstImg" class="imgLogin"/>
