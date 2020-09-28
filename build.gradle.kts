@@ -21,9 +21,17 @@ dependencies {
 
     // Jackson json object mapper
     implementation("com.fasterxml.jackson.core:jackson-databind:2.11.2")
+    implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.11.2")
+
+    // Gson json parser
+    implementation("com.google.code.gson:gson:2.8.6")
 
     // SQLite persistent database
     implementation("org.xerial:sqlite-jdbc:3.32.3.2")
+
+    // Kotlin recursive dependencies
+    implementation("org.jetbrains.kotlin:kotlin-reflect:1.4.10")
+
 }
 
 tasks {
