@@ -47,6 +47,8 @@ function handleMessage(messageEvent) {
             $("#ownScore").val(parsedData.ownPoints);
             $("#foreignScore").val(parsedData.enemyPoints);
             $("#my_image").attr("src","second.jpg");
+
+            $("#opponentMove").attr('src','img/hand-'+parsedData.enemyMove+'.png');
             break;
         case "finish":
             //TODO: process game result
@@ -60,13 +62,13 @@ webSocket.onmessage = handleMessage;
 function login() {
     function loginWithCookie() {
         $("#overview").show();
-        console.log("Logging in with the Username:" + $("#name").val())
+        console.log("Logging in with the Username:" +  Cookies.get('username'))
 
         loggedIn=true;
         webSocket.send(JSON.stringify(
             {
                 "type": "login",
-                "username": $("#name").val(),
+                "username": Cookies.get('username'),
                 "uuid": Cookies.get('loginID')
             }
         ));
@@ -107,7 +109,5 @@ function startGameInitial() {
 
 function chooseMove(name){
     console.log("Choosing "+name);
-
-
     webSocket.send(JSON.stringify({"type":"selection", "value":name}));
 }
