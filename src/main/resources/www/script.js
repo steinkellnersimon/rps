@@ -110,4 +110,8 @@ function startGameInitial() {
 function chooseMove(name){
     console.log("Choosing "+name);
     webSocket.send(JSON.stringify({"type":"selection", "value":name}));
+    $("#selectRPS").fadeOut(() => {
+        $("#activeSelection").fadeIn().attr('src','img/hand-'+name+'.png');
+    });
+
 }

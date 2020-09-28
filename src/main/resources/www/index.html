@@ -8,62 +8,75 @@
 
     <script src="script.js"></script>
     <style>
-        *{
+        * {
             margin: 0;
             padding: 0;
         }
-        html,body{
+
+        html, body {
             height: 100%;
         }
-        .flex-container{
+
+        .flex-container {
             height: 100%;
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
         }
-        #left{
+
+        #left {
             background-color: #44b3e0;
         }
-        #right{
+
+        #right {
             background-color: #d12324;
         }
-        .header{
+
+        .header {
             background: rgba(0, 0, 0, 0.43);
         }
-        .headerName{
+
+        .headerName {
             font-family: sans-serif;
             font-variant: small-caps;
             font-size: 5vmin;
             color: white;
             text-align: center;
         }
-        .header h2{
+
+        .header h2 {
             font-family: sans-serif;
             font-variant: small-caps;
             font-size: 3vmin;
             color: white;
             text-align: center;
         }
-        .strike{
+
+        .strike {
             font-family: sans-serif;
             font-size: 5vmin;
             text-align: right;
             margin-right: 5%;
         }
-        .dialog{
+
+        .dialog {
             position: absolute;
-            top: 50%; right: 50%;
-            transform: translate(50%,-50%);
+            top: 50%;
+            right: 50%;
+            transform: translate(50%, -50%);
             width: 40%;
             background: rgba(0, 0, 0, 0.6);
         }
-        .imgLogin{
-            float:left;
+
+        .imgLogin {
+            float: left;
             width: 20%;
         }
-        #firstImg{
+
+        #firstImg {
             margin-left: 20%
         }
-        #login input{
+
+        #login input {
             margin-left: 10%;
             margin-right: 10%;
             width: 80%;
@@ -74,66 +87,79 @@
             color: gray(60);
             background: rgba(169, 169, 169, 0.5);
         }
-        .btn{
+
+        .btn {
             margin-left: 35%;
             margin-right: 35%;
-            width:30%;
+            width: 30%;
             height: 4em;
-            border-color:#FFCE48;
+            border-color: #FFCE48;
             background-color: #FFCE48;
             font-family: sans-serif;
             font-variant: small-caps;
             margin-bottom: 1em;
         }
-        #imgOverview{
+
+        #imgOverview {
             float: right;
             width: 3em;
             height: 3em;
         }
-        #overview{
+
+        #overview {
             font-family: sans-serif;
             font-variant: small-caps;
-            color:white;
+            color: white;
             width: 30%;
             min-width: 200px;
         }
-        #overview h1{
+
+        #overview h1 {
             font-size: 3vmin;
         }
-        #overview table td{
+
+        #overview table td {
             border-bottom: 1px solid white;
         }
-        #overview table tr{
+
+        #overview table tr {
             padding-bottom: 2em;
         }
-        #overview table{
+
+        #overview table {
             width: 80%;
             margin-left: 10%;
             border-collapse: collapse;
         }
-        #overview .leftColumn{
+
+        #overview .leftColumn {
             width: 30%;
             padding-top: 2em;
         }
-        #overview .rightColumn{
+
+        #overview .rightColumn {
             text-align: right;
             padding-top: 2em;
         }
-        #overview button{
+
+        #overview button {
             margin-top: 2em;
         }
-        #selectRPS img{
+
+        #selectRPS img {
             width: 4em;
             height: 4em;
         }
-        .grid-container{
+
+        .grid-container {
             display: grid;
             place-items: center;
             height: 70%;
         }
-        #mute{
+
+        #mute {
             position: fixed;
-            border-color:#FFCE48;
+            border-color: #FFCE48;
             background-color: #FFCE48;
             font-family: sans-serif;
             font-variant: small-caps;
@@ -141,56 +167,81 @@
     </style>
 </head>
 <body>
-    <div class="flex-container">
-        <div id="login" class="dialog" style="display: none">
-            <img src="img/hand-rock.png" alt="rock" id="firstImg" class="imgLogin"/>
-            <img src="img/hand-scissors.png" alt="scissors" class="imgLogin"/>
-            <img src="img/hand-paper.png" alt="paper" class="imgLogin"/>
-            <input type="text" id="name" name="name" value="Enter your Username"><br>
-            <button onclick="startGameInitial();" id="playBtn" class="btn">Play</button>
+<div style="position:absolute; top:0; left:0;">
+    <button onclick="mute();" id="mute">Mute</button>
+</div>
+<div class="flex-container">
+    <div id="login" class="dialog" style="display: none">
+        <img src="img/hand-rock.png" alt="rock" id="firstImg" class="imgLogin"/>
+        <img src="img/hand-scissors.png" alt="scissors" class="imgLogin"/>
+        <img src="img/hand-paper.png" alt="paper" class="imgLogin"/>
+        <input type="text" id="name" name="name" value="Enter your Username"><br>
+        <button onclick="startGameInitial();" id="playBtn" class="btn">Play</button>
+    </div>
+    <div id="overview" class="dialog" style="visibility: visible">
+        <table>
+            <tr>
+                <th id="headLeftColumn"><img src="img/hand-paper.png" alt="paper" id="imgOverview"/></th>
+                <th id="headRightColumn"><h1 id="helloUsername">Logging in...</h1></th>
+            </tr>
+            <tr>
+                <td class="leftColumn">Wins:</td>
+                <td class="rightColumn" id="numberOfWins"></td>
+            </tr>
+            <tr>
+                <td class="leftColumn">Defeats:</td>
+                <td class="rightColumn" id="numberOfDefeats"></td>
+            </tr>
+            <tr>
+                <td class="leftColumn">Skill Rating:</td>
+                <td class="rightColumn" id="skillRating"></td>
+            </tr>
+        </table>
+        <button onclick="startGame();" id="playBtnOverview" class="btn">Play</button>
+    </div>
+    <div id="left">
+        <div class="header">
+            <h1 class="headerName" id="ownName">YourName</h1>
+            <h2 id="ownRank">Rank: </h2>
+            <h1 class="strike" id="ownScore">0</h1>
         </div>
-        <div id="overview" class="dialog" style="visibility: visible">
-            <table>
-                <tr><th id="headLeftColumn"><img src="img/hand-paper.png" alt="paper" id="imgOverview"/></th>
-                    <th id="headRightColumn"><h1 id="helloUsername">Logging in...</h1></th></tr>
-                <tr><td class="leftColumn">Wins:</td><td class="rightColumn" id="numberOfWins"></td></tr>
-                <tr><td class="leftColumn">Defeats:</td><td class="rightColumn" id="numberOfDefeats"></td></tr>
-                <tr><td class="leftColumn">Skill Rating:</td><td class="rightColumn" id="skillRating"></td></tr>
-            </table>
-            <button onclick="startGame();" id="playBtnOverview" class="btn">Play</button>
-        </div>
-        <div id="left">
-            <div class="header">
-                <button onclick="mute();" id="mute">Mute</button>
-               <h1 class="headerName" id="ownName">YourName</h1>
-                <h2 id="ownRank">Rank: </h2>
-                <h1 class="strike" id="ownScore">0</h1>
+        <div class="grid-container">
+            <div id="selectRPS" style="display: none;">
+                <table>
+                    <tr>
+                        <td></td>
+                        <td>
+                            <img src="img/hand-rock.png" alt="rock" onclick="chooseMove('rock');" class="imgLogin"
+                                 id="chooseRock"/>
+                        </td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <img src="img/hand-scissors.png" onclick="chooseMove('scissors');" alt="scissors"
+                                 class="imgLogin" id="chooseScissors"/>
+                        </td>
+                        <td></td>
+                        <td>
+                            <img src="img/hand-paper.png" onclick="chooseMove('paper');" alt="paper" class="imgLogin"
+                                 id="choosePaper"/>
+                        </td>
+                    </tr>
+                </table>
             </div>
-            <div class="grid-container">
-                <div id="selectRPS" style="display: none;">
-                    <table>
-                        <tr><td></td><td>
-                            <img src="img/hand-rock.png" alt="rock" onclick="chooseMove('rock');" class="imgLogin" id="chooseRock"/>
-                        </td><td></td></tr>
-                        <tr><td>
-                            <img src="img/hand-scissors.png" onclick="chooseMove('scissors');" alt="scissors" class="imgLogin" id="chooseScissors"/>
-                        </td><td></td><td>
-                            <img src="img/hand-paper.png" onclick="chooseMove('paper');" alt="paper" class="imgLogin" id="choosePaper"/>
-                        </td></tr>
-                    </table>
-                </div>
-            </div>
-        </div>
-        <div id="right">
-            <div class="header">
-                <h1 class="headerName" id="foreignName">OpponentName</h1>
-                <h2 id="foreignRank">Rank: </h2>
-                <h1 class="strike" id="foreignScore">0</h1>
-            </div>
-            <div class="grid-container">
-                <img style="display: none" src="img/questionMark.png" alt="paper" class="imgLogin" id="opponentMove"/>
-            </div>
+            <img id="activeSelection" src="img/hand-paper.png" width="200px" style="display: none"></img>
         </div>
     </div>
+    <div id="right">
+        <div class="header">
+            <h1 class="headerName" id="foreignName">OpponentName</h1>
+            <h2 id="foreignRank">Rank: </h2>
+            <h1 class="strike" id="foreignScore">0</h1>
+        </div>
+        <div class="grid-container">
+            <img style="display: none" src="img/questionMark.png" alt="paper" class="imgLogin" id="opponentMove"/>
+        </div>
+    </div>
+</div>
 </body>
 </html>
