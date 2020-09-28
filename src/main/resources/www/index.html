@@ -5,7 +5,7 @@
     <title>Title</title>
     <script src="jquery.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/js-cookie@rc/dist/js.cookie.min.js"></script>
-
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <script src="script.js"></script>
     <style>
         * {
@@ -163,12 +163,18 @@
             background-color: #FFCE48;
             font-family: sans-serif;
             font-variant: small-caps;
+
         }
     </style>
 </head>
 <body>
 <div style="position:absolute; top:0; left:0;">
-    <button onclick="mute();" id="mute">Mute</button>
+    <button onclick="mute();" id="mute">
+        <img src="img/volume_off-24px.svg" id="vol_off">
+        <img src="img/volume_up-24px.svg" id="vol_on" hidden>
+
+
+    </button>
 </div>
 <div class="flex-container">
     <div id="login" class="dialog" style="display: none">

@@ -115,3 +115,22 @@ function chooseMove(name){
     });
 
 }
+var theme = new Audio("RRPS.mp3");
+theme.muted = true;
+theme.play();
+theme.loop = true;
+function mute() {
+    if(theme.muted === true)
+    {
+        $("#vol_off").hide();
+        $("#vol_on").show();
+        theme.muted = false;
+    }
+    if(theme.muted === false)
+    {
+        $("#vol_off").show();
+        $("#vol_on").hide();
+        theme.muted = true;
+    }
+
+}
