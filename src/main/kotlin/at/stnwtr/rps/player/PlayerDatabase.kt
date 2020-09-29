@@ -44,6 +44,7 @@ class PlayerDatabase {
             statement.executeUpdate()
         } catch (e: SQLException) {
             println("Could not write stats for player $player")
+            e.printStackTrace()
         }
     }
 
@@ -55,7 +56,12 @@ class PlayerDatabase {
             val result = statement.executeQuery()
             result.next()
 
-            Player(result.getString("uuid"), score = result.getInt("score"))
+            Player(
+                result.getString("uuid"),
+                wins = result.getInt("wins"),
+                defeats = result.getInt("defeats"),
+                score = result.getInt("score")
+            )
         } catch (e: SQLException) {
             insertPlayer(
                 Player(
@@ -74,13 +80,15 @@ class PlayerDatabase {
         try {
             val statement =
                 connection.prepareStatement("update `players` set `wins`=?, `defeats`=?, `score`=? where `uuid`=?;")
+            println("inserting .... $player")
             statement.setInt(1, player.wins)
-            statement.setInt(1, player.defeats)
-            statement.setInt(1, player.score)
+            statement.setInt(2, player.defeats)
+            statement.setInt(3, if (player.score < 0) 0 else player.score)
             statement.setString(4, player.uuid)
             statement.executeUpdate()
         } catch (e: SQLException) {
             println("Could not update stats for player $player")
+            e.printStackTrace()
         }
     }
 

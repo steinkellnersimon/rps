@@ -9,38 +9,48 @@ import io.javalin.websocket.WsContext
 import io.javalin.websocket.WsHandler
 import io.javalin.websocket.WsMessageContext
 import java.util.*
-import java.util.concurrent.ConcurrentHashMap
-import java.util.concurrent.Executors
-import java.util.concurrent.ThreadLocalRandom
-import java.util.concurrent.TimeUnit
+import java.util.concurrent.*
 import java.util.function.Consumer
 
 class RpsWsHandler(val server: RpsServer) : Consumer<WsHandler> {
 
-    private val executorService = Executors.newScheduledThreadPool(4)
+    private val executorService: ScheduledExecutorService = Executors.newScheduledThreadPool(16)
 
     private val sessions = ConcurrentHashMap<WsContext, Player>()
 
-    val games = mutableListOf<RpsGame>()
+    val games: MutableList<RpsGame> = Collections.synchronizedList(mutableListOf())!!
 
     private fun contextByUUID(uuid: String) = sessions.entries.firstOrNull { it.value.uuid == uuid }?.key!!
 
+    private fun stopGame(context: WsContext) {
+        sessions[context]?.isPlaying = false
+        games.firstOrNull { it.blue.first == context || it.red.first == context }?.stop()
+    }
+
     override fun accept(handler: WsHandler) {
         handler.onMessage {
-            when (PacketType.byType(JsonParser.parseString(it.message()).asJsonObject.get("type").asString)) {
-                PacketType.LOGIN -> processLogin(it)
-                PacketType.STATS -> processStats(it)
-                PacketType.START_GAME -> processStartGame(it)
-                PacketType.SELECTION -> processSelection(it)
+            try {
+                val result = JsonParser.parseString(it.message()).asJsonObject?.get("type")?.asString ?: return@onMessage
+                when (PacketType.byType(result)) {
+                    PacketType.LOGIN -> processLogin(it)
+                    PacketType.STATS -> processStats(it)
+                    PacketType.START_GAME -> processStartGame(it)
+                    PacketType.SELECTION -> processSelection(it)
+                }
+            } catch (ignored: IllegalStateException) {
             }
         }
 
         handler.onClose {
+            stopGame(it)
             sessions.remove(it)
+            println("${it.status()} - ${it.reason()}")
         }
 
         handler.onError {
+            stopGame(it)
             sessions.remove(it)
+            it.error()?.printStackTrace()
         }
     }
 
@@ -77,9 +87,6 @@ class RpsWsHandler(val server: RpsServer) : Consumer<WsHandler> {
             )
 
             games.add(RpsGame(this, server, context to player, contextByUUID(opponent.uuid) to opponent))
-
-            player.isPlaying = true
-            opponent.isPlaying = true
         } else {
             executorService.schedule({
                 RpsGame.PLAYER_QUEUE.remove(player)
@@ -108,11 +115,9 @@ class RpsWsHandler(val server: RpsServer) : Consumer<WsHandler> {
                 )
 
                 games.add(RpsGame(this, server, context to player, null to bot))
-
-                player.isPlaying = true
-                bot.isPlaying = true
             }, RpsGame.TIMEOUT_SECONDS, TimeUnit.SECONDS)
         }
+        println("[start-game] $player")
     }
 
     private fun processStats(context: WsMessageContext) {
@@ -120,6 +125,7 @@ class RpsWsHandler(val server: RpsServer) : Consumer<WsHandler> {
         val response =
             OutgoingStatsPacket(player.wins, player.defeats, server.playerDatabase.getPlayerRank(player), player.score)
         context.send(server.jsonMapper.writeValueAsString(response))
+        println("[stats] $player")
     }
 
     private fun processLogin(context: WsMessageContext) {
@@ -127,7 +133,6 @@ class RpsWsHandler(val server: RpsServer) : Consumer<WsHandler> {
 
         val uuid = packet.uuid ?: UUID.randomUUID().toString()
 
-        // TODO 28.09.2020: regex check
         try {
             UUID.fromString(uuid)
         } catch (e: IllegalArgumentException) {
@@ -144,5 +149,6 @@ class RpsWsHandler(val server: RpsServer) : Consumer<WsHandler> {
         context.send(server.jsonMapper.writeValueAsString(response))
 
         println("${player.name} - ${RpsGame.PLAYER_QUEUE}")
+        println("[login] $player")
     }
 }
