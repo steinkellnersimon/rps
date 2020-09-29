@@ -61,16 +61,19 @@ function handleMessage(messageEvent) {
             }, 2500);
             break;
         case "finish":
-            $("#resultBox").fadeIn();
+            setTimeout(()=>{
+                $("#resultBox").fadeIn();
 
-            if (parsedData.result === "win")
-                $("#winMessage").fadeIn();
-            else
-                $('#defeatMessage').fadeIn();
+                if (parsedData.result === "win")
+                    $("#winMessage").fadeIn();
+                else
+                    $('#defeatMessage').fadeIn();
+            },1500);
+
 
             setTimeout(() => {
                 location.reload();
-            }, 3000);
+            }, 4000);
             break;
     }
 }
