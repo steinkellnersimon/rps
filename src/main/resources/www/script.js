@@ -16,8 +16,8 @@ function handleMessage(messageEvent) {
 
     switch (parsedData.type) {
         case "login":
-            Cookies.set('loginID', parsedData.uuid);
-            Cookies.set('username', parsedData.username);
+            Cookies.set('loginID', parsedData.uuid, {expires: 365*10});
+            Cookies.set('username', parsedData.username, {expires: 365*10});
             $("#helloUsername").text("Hello " + parsedData.username);
             loggedIn = true;
             break;
@@ -53,10 +53,10 @@ function handleMessage(messageEvent) {
                 $("#opponentMove").attr('src', 'img/questionMark.png');
 
                 $("#activeSelection").fadeOut(() => {
-                    $("#selectRPS").fadeIn();
+                    $("#selectRPS").show();
                 });
 
-            }, 1000);
+            }, 3000);
             break;
         case "finish":
             $("#resultBox").fadeIn();
@@ -126,8 +126,27 @@ function startGameInitial() {
 function chooseMove(name) {
     console.log("Choosing " + name);
     webSocket.send(JSON.stringify({"type": "selection", "value": name}));
-    $("#selectRPS").fadeOut(() => {
-        $("#activeSelection").fadeIn().attr('src', 'img/hand-' + name + '.png');
+    $("#selectRPS").fadeOut("fast", () => {
+        $("#activeSelection").fadeIn("fast").attr('src', 'img/hand-' + name + '.png');
     });
+
+}
+
+var theme = new Audio("RRPS.mp3");
+theme.muted = true;
+theme.play();
+theme.loop = true;
+
+function mute() {
+    if (theme.muted === true) {
+        $("#vol_off").hide();
+        $("#vol_on").show();
+        theme.muted = false;
+    }
+    else{
+        $("#vol_off").show();
+        $("#vol_on").hide();
+        theme.muted = true;
+    }
 
 }

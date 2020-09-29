@@ -5,7 +5,7 @@
     <title>Title</title>
     <script src="jquery.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/js-cookie@rc/dist/js.cookie.min.js"></script>
-
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <script src="script.js"></script>
     <style>
         * {
@@ -178,8 +178,12 @@
 </head>
 <body>
 <div style="position:absolute; top:0; left:0;">
-    <button onclick="mute();" id="mute">Mute</button>
-</div>
+    <button onclick="mute();" id="mute">
+        <img src="img/volume_off-24px.svg" id="vol_off">
+        <img src="img/volume_up-24px.svg" id="vol_on" hidden>
+
+
+    </button></div>
 
 <div id="resultBox"
      style="position: absolute; background: rgba(50,50,50,.8); width: 100%; height: 100%; z-index: 4; display: none;">
@@ -246,7 +250,7 @@
                     </tr>
                 </table>
             </div>
-            <img id="activeSelection" src="img/hand-paper.png" width="200px" style="display: none"></img>
+            <img id="activeSelection" src="img/hand-paper.png" width="200px" style="display: none"/>
         </div>
     </div>
     <div id="right">
