@@ -45,7 +45,10 @@ function handleMessage(messageEvent) {
             $("#foreignScore").text(parsedData.enemyPoints);
             $("#my_image").attr("src", "second.jpg");
 
-            $("#opponentMove").attr('src', 'img/hand-' + parsedData.enemyMove + '.png');
+            setTimeout(()=>
+            {
+                $("#opponentMove").attr('src', 'img/hand-' + parsedData.enemyMove + '.png');
+            }, 800);
 
 
             setTimeout(() => {
@@ -55,7 +58,7 @@ function handleMessage(messageEvent) {
                     $("#selectRPS").show();
                 });
 
-            }, 3000);
+            }, 2500);
             break;
         case "finish":
             $("#resultBox").fadeIn();
