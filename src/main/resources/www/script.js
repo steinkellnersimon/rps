@@ -53,7 +53,7 @@ function handleMessage(messageEvent) {
                 $("#opponentMove").attr('src', 'img/questionMark.png');
 
                 $("#activeSelection").fadeOut(() => {
-                    $("#selectRPS").fadeIn();
+                    $("#selectRPS").show();
                 });
 
             }, 1000);
