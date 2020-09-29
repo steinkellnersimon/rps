@@ -1,16 +1,10 @@
 package at.stnwtr.rps.player
 
-import java.sql.Connection
-import java.sql.DriverManager
-import java.sql.SQLException
+import java.sql.*
 
 class PlayerDatabase {
 
     companion object {
-        const val TABLE_STRING =
-            "create table if not exists `players` (`uuid` varchar(36) not null primary key," +
-                    "`wins` int not null default 0,`defeats` int not null default 0, `score` int not null default 0);"
-
         init {
             Class.forName("org.sqlite.JDBC")
         }
@@ -30,12 +24,24 @@ class PlayerDatabase {
     }
 
     private fun createTable() {
-        connection.prepareStatement(TABLE_STRING).executeUpdate()
+        var statement: PreparedStatement? = null
+        try {
+            statement = connection.prepareStatement(
+                "create table if not exists `players` (`uuid` varchar(36) not null primary key," +
+                        "`wins` int not null default 0,`defeats` int not null default 0, `score` int not null default 0);"
+            )
+            statement.executeUpdate()
+        } catch (e: SQLException) {
+            e.printStackTrace()
+        } finally {
+            statement?.close()
+        }
     }
 
-    fun insertPlayer(player: Player) {
+    private fun insertPlayer(player: Player) {
+        var statement: PreparedStatement? = null
         try {
-            val statement =
+            statement =
                 connection.prepareStatement("insert into `players` (`uuid`, `wins`, `defeats`, `score`) values (?, ?, ?, ?);")
             statement.setString(1, player.uuid)
             statement.setInt(2, player.wins)
@@ -43,20 +49,30 @@ class PlayerDatabase {
             statement.setInt(4, player.score)
             statement.executeUpdate()
         } catch (e: SQLException) {
-            println("Could not write stats for player $player")
+            e.printStackTrace()
+        } finally {
+            statement?.close()
         }
     }
 
     fun getPlayer(uuid: String): Player {
+        var statement: PreparedStatement? = null
+        var result: ResultSet? = null
         return try {
-            val statement = connection.prepareStatement("select * from `players` where `uuid` = ?;")
+            statement = connection.prepareStatement("select * from `players` where `uuid` = ?;")
             statement.setString(1, uuid)
 
-            val result = statement.executeQuery()
+            result = statement.executeQuery()
             result.next()
 
-            Player(result.getString("uuid"), score = result.getInt("score"))
+            Player(
+                result.getString("uuid"),
+                wins = result.getInt("wins"),
+                defeats = result.getInt("defeats"),
+                score = result.getInt("score")
+            )
         } catch (e: SQLException) {
+            e.printStackTrace()
             insertPlayer(
                 Player(
                     uuid,
@@ -67,40 +83,57 @@ class PlayerDatabase {
                 )
             )
             getPlayer(uuid)
+        } finally {
+            result?.close()
+            statement?.close()
         }
     }
 
     fun updatePlayer(player: Player) {
+        var statement: PreparedStatement? = null
         try {
-            val statement =
+            statement =
                 connection.prepareStatement("update `players` set `wins`=?, `defeats`=?, `score`=? where `uuid`=?;")
             statement.setInt(1, player.wins)
-            statement.setInt(1, player.defeats)
-            statement.setInt(1, player.score)
+            statement.setInt(2, player.defeats)
+            statement.setInt(3, if (player.score < 0) 0 else player.score)
             statement.setString(4, player.uuid)
             statement.executeUpdate()
         } catch (e: SQLException) {
-            println("Could not update stats for player $player")
+            e.printStackTrace()
+        } finally {
+            statement?.close()
         }
     }
 
     fun getPlayerRank(player: Player): Int {
+        var statement: PreparedStatement? = null
+        var result: ResultSet? = null
+
         return try {
-            val statement = connection.prepareStatement("select count(*) from `players` where `score` > ?")
+            statement = connection.prepareStatement("select count(*) from `players` where `score` > ?")
             statement.setInt(1, player.score)
 
-            val result = statement.executeQuery()
+            result = statement.executeQuery()
             result.getInt("count(*)") + 1
         } catch (e: SQLException) {
+            e.printStackTrace()
             Player.DEFAULT_RANK
+        } finally {
+            result?.close()
+            statement?.clearParameters()
         }
     }
 
     fun getAll(): List<Player> {
+        var statement: PreparedStatement? = null
+        var result: ResultSet? = null
+
         val players = mutableListOf<Player>()
+
         try {
-            val statement = connection.prepareStatement("select * from `players`")
-            val result = statement.executeQuery()
+            statement = connection.prepareStatement("select * from `players`")
+            result = statement.executeQuery()
 
             while (result.next()) {
                 players.add(
@@ -114,7 +147,10 @@ class PlayerDatabase {
                 )
             }
         } catch (e: SQLException) {
-            println("Could not get all")
+            e.printStackTrace()
+        } finally {
+            result?.close()
+            statement?.close()
         }
         return players
     }

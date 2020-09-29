@@ -15,7 +15,12 @@ import java.util.concurrent.ThreadLocalRandom
 import kotlin.math.pow
 import kotlin.math.roundToInt
 
-class RpsGame(val handler: RpsWsHandler, val server: RpsServer, val blue: Pair<WsContext, Player>, val red: Pair<WsContext?, Player>) {
+class RpsGame(
+    private val handler: RpsWsHandler,
+    val server: RpsServer,
+    val blue: Pair<WsContext, Player>,
+    val red: Pair<WsContext?, Player>
+) {
 
     private fun Double.clamp(min: Double, max: Double) = if (this < min) min else (if (this > max) max else this)
 
@@ -26,8 +31,14 @@ class RpsGame(val handler: RpsWsHandler, val server: RpsServer, val blue: Pair<W
     private var blueSelection: Hand? = null
     private var redSelection: Hand? = null
 
+    init {
+        blue.second.isPlaying = true
+        red.second.isPlaying = true
+    }
+
     fun receive(context: WsMessageContext) {
-        val hand = Hand.byType(server.jsonMapper.readValue<IncomingSelectionPacket>(context.message()).value)
+
+        val hand = Hand.byType(handler.jsonMapper.readValue<IncomingSelectionPacket>(context.message()).value)
         when (context) {
             blue.first -> {
                 if (blueSelection == null) {
@@ -82,8 +93,8 @@ class RpsGame(val handler: RpsWsHandler, val server: RpsServer, val blue: Pair<W
             bluePoints
         )
 
-        blue.first.send(server.jsonMapper.writeValueAsString(bluePacket))
-        red.first?.send(server.jsonMapper.writeValueAsString(redPacket))
+        blue.first.send(handler.jsonMapper.writeValueAsString(bluePacket))
+        red.first?.send(handler.jsonMapper.writeValueAsString(redPacket))
 
         if (bluePoints == 3 || redPoints == 3) {
             var blueFinishPacket: OutgoingFinishPacket? = null
@@ -103,12 +114,18 @@ class RpsGame(val handler: RpsWsHandler, val server: RpsServer, val blue: Pair<W
             } else if (redPoints == 3) {
                 blueFinishPacket = OutgoingFinishPacket(Result.DEFEAT.type)
                 redFinishPacket = OutgoingFinishPacket(Result.WIN.type)
-                score = score(red.second.score, blue.second.score, bluePoints, redPoints)
+                score = score(red.second.score, blue.second.score, redPoints, bluePoints)
                 red.second.wins += 1
                 red.second.score += score
                 blue.second.defeats += 1
                 blue.second.score -= score
             }
+
+            if (blue.second.score < 0)
+                blue.second.score = 0
+
+            if (red.second.score < 0)
+                red.second.score = 0
 
             server.playerDatabase.updatePlayer(blue.second)
             server.playerDatabase.updatePlayer(red.second)
@@ -127,11 +144,11 @@ class RpsGame(val handler: RpsWsHandler, val server: RpsServer, val blue: Pair<W
                 red.second.score
             )
 
-            blue.first.send(server.jsonMapper.writeValueAsString(blueFinishPacket))
-            red.first?.send(server.jsonMapper.writeValueAsString(redFinishPacket))
+            blue.first.send(handler.jsonMapper.writeValueAsString(blueFinishPacket))
+            red.first?.send(handler.jsonMapper.writeValueAsString(redFinishPacket))
 
-            blue.first.send(server.jsonMapper.writeValueAsString(blueStatsPacket))
-            red.first?.send(server.jsonMapper.writeValueAsString(redStatsPacket))
+            blue.first.send(handler.jsonMapper.writeValueAsString(blueStatsPacket))
+            red.first?.send(handler.jsonMapper.writeValueAsString(redStatsPacket))
 
             handler.games.remove(this)
 
@@ -145,6 +162,20 @@ class RpsGame(val handler: RpsWsHandler, val server: RpsServer, val blue: Pair<W
 
     private fun handleBot() {
         redSelection = Hand.values()[ThreadLocalRandom.current().nextInt(Hand.values().size)]
+    }
+
+    fun stop() {
+        if (!blue.second.isPlaying) {
+            redPoints = 2
+            redSelection = Hand.ROCK
+            blueSelection = Hand.SCISSORS
+            update()
+        } else if (!red.second.isPlaying) {
+            bluePoints = 2
+            blueSelection = Hand.ROCK
+            redSelection = Hand.SCISSORS
+            update()
+        }
     }
 
     companion object {
