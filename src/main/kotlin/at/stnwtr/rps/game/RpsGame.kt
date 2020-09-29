@@ -11,12 +11,16 @@ import com.fasterxml.jackson.module.kotlin.readValue
 import io.javalin.websocket.WsContext
 import io.javalin.websocket.WsMessageContext
 import java.util.concurrent.ConcurrentLinkedQueue
-import java.util.concurrent.Executors
 import java.util.concurrent.ThreadLocalRandom
 import kotlin.math.pow
 import kotlin.math.roundToInt
 
-class RpsGame(val handler: RpsWsHandler, val server: RpsServer, val blue: Pair<WsContext, Player>, val red: Pair<WsContext?, Player>) {
+class RpsGame(
+    private val handler: RpsWsHandler,
+    val server: RpsServer,
+    val blue: Pair<WsContext, Player>,
+    val red: Pair<WsContext?, Player>
+) {
 
     private fun Double.clamp(min: Double, max: Double) = if (this < min) min else (if (this > max) max else this)
 
@@ -33,7 +37,8 @@ class RpsGame(val handler: RpsWsHandler, val server: RpsServer, val blue: Pair<W
     }
 
     fun receive(context: WsMessageContext) {
-        val hand = Hand.byType(server.jsonMapper.readValue<IncomingSelectionPacket>(context.message()).value)
+
+        val hand = Hand.byType(handler.jsonMapper.readValue<IncomingSelectionPacket>(context.message()).value)
         when (context) {
             blue.first -> {
                 if (blueSelection == null) {
@@ -88,13 +93,13 @@ class RpsGame(val handler: RpsWsHandler, val server: RpsServer, val blue: Pair<W
             bluePoints
         )
 
-        blue.first.send(server.jsonMapper.writeValueAsString(bluePacket))
-        red.first?.send(server.jsonMapper.writeValueAsString(redPacket))
+        blue.first.send(handler.jsonMapper.writeValueAsString(bluePacket))
+        red.first?.send(handler.jsonMapper.writeValueAsString(redPacket))
 
         if (bluePoints == 3 || redPoints == 3) {
             var blueFinishPacket: OutgoingFinishPacket? = null
             var redFinishPacket: OutgoingFinishPacket? = null
-            var score = 0
+            val score: Int
             val blueStatsPacket: OutgoingStatsPacket?
             val redStatsPacket: OutgoingStatsPacket?
 
@@ -122,8 +127,6 @@ class RpsGame(val handler: RpsWsHandler, val server: RpsServer, val blue: Pair<W
             if (red.second.score < 0)
                 red.second.score = 0
 
-            println("Score = $score")
-
             server.playerDatabase.updatePlayer(blue.second)
             server.playerDatabase.updatePlayer(red.second)
 
@@ -141,13 +144,11 @@ class RpsGame(val handler: RpsWsHandler, val server: RpsServer, val blue: Pair<W
                 red.second.score
             )
 
-            println("---\n".repeat(10))
+            blue.first.send(handler.jsonMapper.writeValueAsString(blueFinishPacket))
+            red.first?.send(handler.jsonMapper.writeValueAsString(redFinishPacket))
 
-            blue.first.send(server.jsonMapper.writeValueAsString(blueFinishPacket))
-            red.first?.send(server.jsonMapper.writeValueAsString(redFinishPacket))
-
-            blue.first.send(server.jsonMapper.writeValueAsString(blueStatsPacket))
-            red.first?.send(server.jsonMapper.writeValueAsString(redStatsPacket))
+            blue.first.send(handler.jsonMapper.writeValueAsString(blueStatsPacket))
+            red.first?.send(handler.jsonMapper.writeValueAsString(redStatsPacket))
 
             handler.games.remove(this)
 

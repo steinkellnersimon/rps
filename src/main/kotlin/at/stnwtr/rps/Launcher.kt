@@ -4,11 +4,6 @@ import java.io.IOException
 import java.nio.file.Files
 import java.nio.file.Path
 
-// TODO 27.09.2020: Close Connection / Statement / ResultSet instances
-// TODO 28.09.2020: einer spielt lange nicht ... timeout
-// TODO 28.09.2020: während game rausgehen ... anderer gewinnt
-// fixed -> 30 seconds websocket timeout
-
 private fun configPairs(args: Array<String>) = try {
     Files.readAllLines(Path.of(args[0]))
         .map { it.split("=") }

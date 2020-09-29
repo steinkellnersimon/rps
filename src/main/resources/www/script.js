@@ -1,5 +1,4 @@
-var webSocket = new WebSocket("ws://rps.stnwtr.de/ws");
-//var webSocket = new WebSocket("ws://10.20.128.69:7435/ws");
+var webSocket = new WebSocket("ws://" + location.hostname + ":" + location.port + "/ws")
 var loggedIn = false;
 webSocket.onopen = login;
 webSocket.onerror = (e) => console.log(e);
@@ -134,10 +133,10 @@ function chooseMove(name) {
 
 var theme = new Audio("RRPS.mp3");
 theme.muted = true;
-theme.play();
 theme.loop = true;
 
 function mute() {
+    theme.play()
     if (theme.muted === true) {
         $("#vol_off").hide();
         $("#vol_on").show();
