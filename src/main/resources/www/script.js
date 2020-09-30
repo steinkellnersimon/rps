@@ -41,14 +41,19 @@ function handleMessage(messageEvent) {
 
             break;
         case "move-result":
-            $("#ownScore").text(parsedData.ownPoints);
-            $("#foreignScore").text(parsedData.enemyPoints);
+
             $("#my_image").attr("src", "second.jpg");
 
             setTimeout(()=>
             {
                 $("#opponentMove").attr('src', 'img/hand-' + parsedData.enemyMove + '.png');
             }, 800);
+
+            setTimeout(()=>
+            {
+                $("#ownScore").text(parsedData.ownPoints);
+                $("#foreignScore").text(parsedData.enemyPoints);
+            },1000);
 
 
             setTimeout(() => {
