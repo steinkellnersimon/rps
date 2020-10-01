@@ -1,11 +1,11 @@
 # Corona Rock Paper Scissors
-Play rock paper scissors corona edition online:
+Play rock paper scissors corona/remote edition online:
 
 http://rock-paper-scissors.fun/
 
-The Backend is using WebSockets to communicate in Web-Realtime using Javalin and Kotlin. Feel free to advance upon our creation.
+It was created as we only had 8 hours to create a small fun project. The Backend is using WebSockets to communicate in Web-Realtime using Javalin and Kotlin. Feel free to advance upon our creation.
 
-You will only find bots (which pick their choice absolutely randomly) as enemies if no other enemy is found. 
+Bots will only be found as enemies if no other enemy is found. They only pick their choices pseudo-randomly.
 
 You can check out the web-content in src/main/resources/
 
