@@ -16,7 +16,7 @@ data class Player(
         const val DEFAULT_NAME = "just no"
         const val DEFAULT_WINS = 0
         const val DEFAULT_DEFEATS = 0
-        const val DEFAULT_SCORE = 0
+        const val DEFAULT_SCORE = 1_000
         const val DEFAULT_RANK = 0
     }
 }

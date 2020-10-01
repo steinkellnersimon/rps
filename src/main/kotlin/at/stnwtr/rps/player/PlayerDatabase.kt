@@ -28,7 +28,7 @@ class PlayerDatabase {
         try {
             statement = connection.prepareStatement(
                 "create table if not exists `players` (`uuid` varchar(36) not null primary key," +
-                        "`wins` int not null default 0,`defeats` int not null default 0, `score` int not null default 0);"
+                        "`wins` int not null default ${Player.DEFAULT_WINS},`defeats` int not null default ${Player.DEFAULT_DEFEATS}, `score` int not null default ${Player.DEFAULT_SCORE});"
             )
             statement.executeUpdate()
         } catch (e: SQLException) {
