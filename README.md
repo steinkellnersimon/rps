@@ -1,7 +1,7 @@
 # Corona Rock Paper Scissors
 Play rock paper scissors corona/remote edition online:
 
-http://rock-paper-scissors.fun/
+http://www.rock-paper-scissors.fun:7435/
 
 It was created as we only had 8 hours to create a small fun project. The Backend is using WebSockets to communicate in Web-Realtime using Javalin and Kotlin. Feel free to advance upon our creation.
 
