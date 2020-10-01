@@ -9,7 +9,7 @@ You will only find bots (which pick their choice absolutely randomly) as enemies
 
 You can check out the web-content in src/main/resources/
 
-##Contributors
+## Contributors
 - Martin Dallinger (@S0urC1oud): Design and JavaScript
 - Dominik Lagler: HTML and CSS
 - Simon Steinkellner (@steinkellnersimon): Backend and Deployment
