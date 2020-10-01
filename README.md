@@ -11,6 +11,6 @@ You can check out the web-content in src/main/resources/
 
 ## Contributors
 - Martin Dallinger (@S0urC1oud): Design and JavaScript
-- Dominik Lagler: HTML and CSS
+- Dominik Lagler (@laglerdominik): HTML and CSS
 - Simon Steinkellner (@steinkellnersimon): Backend and Deployment
 - Elias Leonhardsberger (@Xoechts): Music and Rating system
